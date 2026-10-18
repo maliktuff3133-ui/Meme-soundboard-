@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090914">
+<title>Meme Soundboard</title>
+<style>
+:root{color-scheme:dark;--bg:#090914;--panel:#121226;--line:#29294b;--purple:#9b5cff;--cyan:#35e8ff;--pink:#ff4fd8;--text:#f7f5ff;--muted:#aaa8c7}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#282052 0,transparent 55%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;min-height:100vh}
+main{max-width:1050px;margin:auto;padding:28px 18px 50px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(135deg,var(--purple),var(--pink));box-shadow:0 0 25px #9b5cff66;font-size:25px}
+h1{font-size:clamp(25px,5vw,38px);margin:0;letter-spacing:-1px}.sub{color:var(--muted);margin:5px 0 0;font-size:14px}
+.pill{border:1px solid #35355a;border-radius:999px;padding:8px 12px;color:var(--cyan);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.hero{margin:28px 0 22px;padding:25px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(120deg,#17152d,#111126);box-shadow:0 15px 50px #0003}
+.hero h2{font-size:clamp(21px,4vw,30px);margin:0 0 8px}.hero p{margin:0;color:var(--muted);line-height:1.55}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.control,.upload-label{border:1px solid #414166;background:#1b1b36;color:var(--text);border-radius:12px;padding:10px 14px;font-weight:650;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px}.control:hover,.upload-label:hover{border-color:var(--cyan);transform:translateY(-1px)}.control.primary{background:linear-gradient(110deg,#7540d9,#a72fc0);border-color:transparent}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:10px;margin:25px 2px 14px}.section-head h3{margin:0;font-size:19px}.section-head span{font-size:13px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.sound{position:relative;min-height:125px;padding:17px 12px;border-radius:18px;text-align:left;border:1px solid var(--line);background:linear-gradient(145deg,#17172f,#101020);color:var(--text);cursor:pointer;overflow:hidden;transition:transform .15s,border-color .15s,box-shadow .15s}
+.sound:before{content:"";position:absolute;width:90px;height:90px;right:-35px;top:-40px;border-radius:50%;background:var(--glow,#9b5cff);filter:blur(30px);opacity:.25}
+.sound:hover{transform:translateY(-3px);border-color:var(--glow,var(--purple));box-shadow:0 8px 25px #0005}.sound:active,.sound.playing{transform:scale(.97);border-color:var(--glow,var(--cyan));box-shadow:0 0 22px color-mix(in srgb,var(--glow,var(--cyan)) 25%,transparent)}
+.emoji{display:block;font-size:30px;margin-bottom:12px;filter:drop-shadow(0 0 10px var(--glow,var(--purple)))}.sound strong{display:block;font-size:15px}.sound small{display:block;color:var(--muted);font-size:11px;margin-top:5px}
+.sound .play{position:absolute;right:12px;bottom:13px;color:var(--glow,var(--cyan));font-size:17px}
+.upload-panel{border:1px dashed #484873;background:#111122;border-radius:20px;padding:19px;margin-top:28px}.upload-panel h3{margin:0 0 6px}.upload-panel p{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.5}.upload-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.file-input{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}.custom-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px;margin-top:14px}.custom-card{display:flex;align-items:center;gap:8px;min-width:0}.custom-card .sound{flex:1;min-width:0}.remove{border:1px solid #414166;background:#1a192e;color:#ff91dd;border-radius:10px;padding:8px;cursor:pointer}
+footer{text-align:center;color:#797896;font-size:12px;margin-top:28px;line-height:1.6}.toast{min-height:20px;color:var(--cyan);font-size:13px;margin-top:10px}
+@media(max-width:700px){main{padding:20px 13px 35px}.grid,.custom-list{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{padding:20px}.sound{min-height:120px}.pill{font-size:10px}}
+@media(max-width:360px){.grid,.custom-list{grid-template-columns:1fr}.sound{min-height:95px}.emoji{display:inline-block;margin:0 10px 0 0}}
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <div class="brand"><div class="logo">🔊</div><div><h1>Meme Soundboard</h1><p class="sub">One tap. Maximum meme energy.</p></div></div>
+    <span class="pill">● Soundboard ready</span>
+  </header>
+  <section class="hero">
+    <h2>Drop the sound. 💥</h2>
+    <p>Tap a sound button to play it. The built-in buttons create fun sound effects right in your browser. Add your own audio files below to play the real clips you have saved.</p>
+    <div class="controls">
+      <button class="control primary" id="stopAll">■ Stop sounds</button>
+      <button class="control" id="muteBtn" aria-pressed="false">🔊 Sound on</button>
+    </div>
+    <div class="toast" id="status" role="status" aria-live="polite">Ready when you are.</div>
+  </section>
+  <div class="section-head"><h3>⚡ Meme classics</h3><span>Tap to play</span></div>
+  <section class="grid" id="builtins">
+    <button class="sound" data-sound="bruh" style="--glow:#a66bff"><span class="emoji">🫠</span><strong>Bruh</strong><small>Disbelief mode</small><span class="play">▶</span></button>
+    <button class="sound" data-sound="vine" style="--glow:#ff4fd8"><span class="emoji">💥</span><strong>Vine boom</strong><small>Dramatic impact</small><span class="play">▶</span></button>
+    <button class="sound" data-sound="fart" style="--glow:#a5ff55"><span class="emoji">💨</span><strong>Fart</strong><small>Certified toot</small><span class="play">▶</span></button>
+    <button class="sound" data-sound="airhorn" style="--glow:#35e8ff"><span class="emoji">📢</span><strong>Air horn</strong><small>Maximum volume energy</small><span class="play">▶</span></button>
+    <button class="sound" data-sound="among" style="--glow:#ff626b"><span class="emoji">🚀</span><strong>Among Us</strong><small>Sci-fi blip</small><span class="play">▶</span></button>
+    <button class="sound" data-sound="laugh" style="--glow:#ffd65a"><span class="emoji">😂</span><strong>Goofy laugh</strong><small>Cartoon giggle</small><span class="play">▶</span></button>
+    <button class="sound" data-sound="error" style="--glow:#ff8755"><span class="emoji">🖥️</span><strong>Windows error</strong><small>Error-ish alert</small><span class="play">▶</span></button>
+  </section>
+  <section class="upload-panel">
+    <h3>🎵 Add your own sounds</h3>
+    <p>Choose MP3, WAV, OGG, M4A, or another audio file from your device. Your files stay in your browser; this page does not upload them to a server.</p>
+    <div class="upload-row">
+      <label class="upload-label" for="filePicker">＋ Choose audio files</label>
+      <input class="file-input" id="filePicker" type="file" accept="audio/*,.mp3,.wav,.ogg,.m4a" multiple>
+      <button class="control" id="clearCustom">Clear custom sounds</button>
+    </div>
+    <div class="custom-list" id="customList"></div>
+  </section>
+  <footer>Made for meme moments ✦ Works on phones, tablets, and computers.<br>Note: built-in buttons play generated sound effects, not original meme recordings.</footer>
+</main>
+<script>
+(() => {
+  const status = document.getElementById('status');
+  const muteBtn = document.getElementById('muteBtn');
+  let muted = false, ctx = null, activeNodes = [], custom = [], nextId = 1;
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  function say(message){ status.textContent = message; }
+  function getContext(){ if(!AudioContextClass){say('Audio is not supported in this browser. Try a current version of Chrome.');return null;} if(!ctx) ctx = new AudioContextClass(); if(ctx.state === 'suspended') ctx.resume(); return ctx; }
+  function track(node){ activeNodes.push(node); try{node.addEventListener?.('ended',()=>{activeNodes=activeNodes.filter(n=>n!==node);});}catch(e){} }
+  function stopAll(){ activeNodes.forEach(n=>{try{if(n.stop)n.stop();if(n.pause){n.pause();n.currentTime=0;}}catch(e){}});activeNodes=[];document.querySelectorAll('.sound.playing').forEach(b=>b.classList.remove('playing'));say('All sounds stopped.'); }
+  function tone(freq, start, duration, type='sine', gain=.25, endFreq=null){
+    const c=getContext(); if(!c||muted)return;
+    const o=c.createOscillator(), g=c.createGain();
+    o.type=type;o.frequency.setValueAtTime(Math.max(1,freq),c.currentTime+start);
+    if(endFreq) o.frequency.exponentialRampToValueAtTime(Math.max(1,endFreq),c.currentTime+start+duration);
+    g.gain.setValueAtTime(.0001,c.currentTime+start);g.gain.exponentialRampToValueAtTime(gain,c.currentTime+start+.015);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+start+duration);
+    o.connect(g);g.connect(c.destination);o.start(c.currentTime+start);o.stop(c.currentTime+start+duration+.03);track(o);
+  }
+  function noise(start,duration,gain=.25,filterFreq=800){
+    const c=getContext();if(!c||muted)return;
+    const buffer=c.createBuffer(1,Math.ceil(c.sampleRate*duration),c.sampleRate), data=buffer.getChannelData(0);
+    for(let i=0;i<data.length;i++)data[i]=(Math.random()*2-1)*(1-i/data.length);
+    const src=c.createBufferSource(),filter=c.createBiquadFilter(),g=c.createGain();
+    src.buffer=buffer;filter.type='lowpass';filter.frequency.value=filterFreq;
+    g.gain.setValueAtTime(.0001,c.currentTime+start);g.gain.exponentialRampToValueAtTime(gain,c.currentTime+start+.02);g.gain.exponentialRampToValueAtTime(.0001,c.currentTime+start+duration);
+    src.connect(filter);filter.connect(g);g.connect(c.destination);src.start(c.currentTime+start);src.stop(c.currentTime+start+duration+.03);track(src);
+  }
+  function play(name){
+    if(muted){say('Sound is muted. Turn sound on to play.');return;}
+    const c=getContext();if(!c)return;
+    const b=document.querySelector('[data-sound="'+name+'"]');if(b){b.classList.add('playing');setTimeout(()=>b.classList.remove('playing'),650);}
+    switch(name){
+      case 'bruh': tone(190,0,.18,'triangle',.28,120);tone(135,.18,.5,'sawtooth',.2,82);say('Bruh mode activated.');break;
+      case 'vine': noise(0,.22,.8,1700);tone(75,0,.42,'sine',.65,35);tone(48,.03,.35,'triangle',.3,30);say('Vine boom!');break;
+      case 'fart': tone(100,0,.2,'sawtooth',.25,65);tone(78,.18,.25,'sawtooth',.2,48);tone(90,.42,.28,'sawtooth',.18,40);say('Toot deployed.');break;
+      case 'airhorn': [0,.12,.24].forEach((t)=>{tone(440,t,.75,'sawtooth',.15);tone(554,t,.75,'sawtooth',.12);});say('Air horn!');break;
+      case 'among': tone(620,0,.12,'sine',.25,360);tone(440,.16,.16,'sine',.25,280);tone(260,.38,.45,'triangle',.22,120);say('Suspicious activity detected.');break;
+      case 'laugh': [0,.17,.34,.51,.68].forEach((t,i)=>tone(i%2?480:620,t,.13,'triangle',.17,i%2?360:420));say('Goofy laugh!');break;
+      case 'error': tone(880,0,.11,'square',.18,600);tone(440,.15,.16,'square',.18,300);say('Error sound!');break;
+    }
+  }
+  document.querySelectorAll('[data-sound]').forEach(b=>b.addEventListener('click',()=>play(b.dataset.sound)));
+  document.getElementById('stopAll').addEventListener('click',stopAll);
+  muteBtn.addEventListener('click',()=>{muted=!muted;muteBtn.textContent=muted?'🔇 Sound off':'🔊 Sound on';muteBtn.setAttribute('aria-pressed',String(muted));if(muted)stopAll();say(muted?'Sound muted.':'Sound on.');});
+  const picker=document.getElementById('filePicker'), list=document.getElementById('customList');
+  function renderCustom(){
+    list.innerHTML='';
+    custom.forEach(item=>{
+      const card=document.createElement('div');card.className='custom-card';
+      const button=document.createElement('button');button.className='sound';button.style.setProperty('--glow','#35e8ff');
+      const emoji=document.createElement('span');emoji.className='emoji';emoji.textContent='🎧';
+      const strong=document.createElement('strong');strong.textContent=item.name;
+      const small=document.createElement('small');small.textContent='Your audio file';
+      const playIcon=document.createElement('span');playIcon.className='play';playIcon.textContent='▶';
+      button.append(emoji,strong,small,playIcon);
+      button.addEventListener('click',async()=>{
+        if(muted){say('Sound is muted. Turn sound on to play.');return;}
+        stopPlaybackOnly();
+        const audio=new Audio(item.url);audio.preload='auto';audio.volume=1;
+        audio.addEventListener('error',()=>say('Could not play this file format. Try MP3 or WAV.'),{once:true});
+        try{await audio.play();track(audio);button.classList.add('playing');audio.addEventListener('ended',()=>button.classList.remove('playing'));say('Playing '+item.name);}catch(e){say('Tap again to allow playback, or try another audio file.');}
+      });
+      const remove=document.createElement('button');remove.className='remove';remove.title='Remove '+item.name;remove.setAttribute('aria-label','Remove '+item.name);remove.textContent='✕';
+      remove.addEventListener('click',()=>{URL.revokeObjectURL(item.url);custom=custom.filter(x=>x.id!==item.id);renderCustom();say('Removed '+item.name+'.');});
+      card.append(button,remove);list.append(card);
+    });
+  }
+  function stopPlaybackOnly(){activeNodes.forEach(n=>{try{if(n.stop)n.stop();if(n.pause){n.pause();n.currentTime=0;}}catch(e){}});activeNodes=[];}
+  picker.addEventListener('change',()=>{
+    const files=Array.from(picker.files||[]).filter(f=>f.type.startsWith('audio/')||/\.(mp3|wav|ogg|m4a|aac|flac)$/i.test(f.name));
+    files.forEach(file=>{const base=file.name.replace(/\.[^.]+$/,'');custom.push({id:nextId++,name:base.slice(0,34)||'Custom sound',url:URL.createObjectURL(file)});});
+    renderCustom();if(files.length)say('Added '+files.length+' custom sound'+(files.length===1?'':'s')+'.');else say('No audio files selected.');picker.value='';
+  });
+  document.getElementById('clearCustom').addEventListener('click',()=>{custom.forEach(x=>URL.revokeObjectURL(x.url));custom=[];renderCustom();say('Custom sounds cleared.');});
+})();
+</script>
+</body>
+</html>
